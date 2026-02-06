@@ -7,8 +7,6 @@
 
 if not game:IsLoaded() then game["Loaded"]:Wait() end
 
-local ENVIRONMENT = {} -- will be returned later to merge with already existing env
-
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local UserInputService = game:GetService("UserInputService")
 local InsertService = game:GetService("InsertService")
@@ -78,23 +76,21 @@ local RobloxEnvironment = table.freeze({
 
 
 -- Returns local asset.
-ENVIRONMENT["getobjects"] = newcclosure(function(Asset)
+env["getobjects"] = newcclosure(function(Asset)
     return { InsertService:LoadLocalAsset(Asset) }
 end)
 
-ENVIRONMENT["get_objects"] = getobjects
-ENVIRONMENT["GetObjects"] = getobjects
+env["get_objects"] = env.getobjects
+env["GetObjects"] = env.getobjects
 
 -- Returns the script responsible for the currently running function.
-ENVIRONMENT["getcallingscript"] = (function() return getgenv(0)["script"] end)
-ENVIRONMENT["get_calling_script"] = getcallingscript
-ENVIRONMENT["GetCallingScript"] = getcallingscript
+env["getcallingscript"] = (function() return getgenv(0)["script"] end)
+env["get_calling_script"] = env.getcallingscript
+env["GetCallingScript"] = env.getcallingscript
 
 -- Generates a new closure using the bytecode of script.
-ENVIRONMENT["getscriptclosure"] = (function(script)
+env["getscriptclosure"] = (function(script)
 	return function()
 		return getrenv()["table"].clone(getrenv().require(script))
 	end
 end)
-
-return ENVIRONMENT
