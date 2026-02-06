@@ -73,7 +73,10 @@ local RobloxEnvironment = table.freeze({
 
 	["game"] = game, ["workspace"] = workspace, ["Game"] = game, ["Workspace"] = workspace,
 
-	["getmetatable"] = getmetatable, ["setmetatable"] = setmetatable
+	["getmetatable"] = getmetatable, ["setmetatable"] = setmetatable,
+
+	HideTemp = function() end,
+	GetIsModal = function() end
 })
 
 -- Returns local asset.
