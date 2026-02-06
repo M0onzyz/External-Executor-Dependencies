@@ -1236,4 +1236,13 @@ ENVIRONMENT["set_render_property"] = getrenderproperty
 ENVIRONMENT["SetRenderProperty"] = setrenderproperty
 print("[ENVIRONMENT] LOADED ENVIRONMENT")
 
+ENVIRONMENT.HideTemp = function()
+    -- Stub: does nothing
+end
+
+ENVIRONMENT.GetIsModal = function()
+    -- Stub: returns false
+    return false
+end
+
 return ENVIRONMENT
