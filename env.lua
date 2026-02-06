@@ -75,3 +75,26 @@ local RobloxEnvironment = table.freeze({
 
 	["getmetatable"] = getmetatable, ["setmetatable"] = setmetatable,
 })
+
+
+-- Returns local asset.
+ENVIRONMENT["getobjects"] = newcclosure(function(Asset)
+    return { InsertService:LoadLocalAsset(Asset) }
+end)
+
+ENVIRONMENT["get_objects"] = getobjects
+ENVIRONMENT["GetObjects"] = getobjects
+
+-- Returns the script responsible for the currently running function.
+ENVIRONMENT["getcallingscript"] = (function() return getgenv(0)["script"] end)
+ENVIRONMENT["get_calling_script"] = getcallingscript
+ENVIRONMENT["GetCallingScript"] = getcallingscript
+
+-- Generates a new closure using the bytecode of script.
+ENVIRONMENT["getscriptclosure"] = (function(script)
+	return function()
+		return getrenv()["table"].clone(getrenv().require(script))
+	end
+end)
+
+return ENVIRONMENT
