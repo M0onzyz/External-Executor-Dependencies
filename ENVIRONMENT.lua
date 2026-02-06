@@ -1232,3 +1232,4 @@ end)
 
 getgenv()["set_render_property"] = getrenderproperty
 getgenv()["SetRenderProperty"] = setrenderproperty
+print("[ENVIRONMENT] LOADED ENVIRONMENT")
