@@ -1,11 +1,14 @@
-local coreGui = game:GetService("CoreGui")
+--local coreGui = game:GetService("Play") -- ORIGINAL
+local playergui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 5)
 
 local camera = workspace.CurrentCamera
 local drawingUI = Instance.new("ScreenGui")
 drawingUI.Name = "Drawing | Xeno"
 drawingUI.IgnoreGuiInset = true
 drawingUI.DisplayOrder = 0x7fffffff
-drawingUI.Parent = coreGui
+drawingUI.Parent = playergui
+--drawingUI.Parent = coreGui -- ORIGINAL
+player:WaitForChild("PlayerGui")
 
 local drawingIndex = 0
 --[[
