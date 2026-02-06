@@ -7,6 +7,8 @@
 
 if not game:IsLoaded() then game["Loaded"]:Wait() end
 
+local ENVIRONMENT = {} -- will be returned later to merge with already existing env
+
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local UserInputService = game:GetService("UserInputService")
 local InsertService = game:GetService("InsertService")
@@ -75,81 +77,81 @@ local RobloxEnvironment = table.freeze({
 })
 
 -- Returns local asset.
-getgenv()["getobjects"] = newcclosure(function(Asset)
+ENVIRONMENT["getobjects"] = newcclosure(function(Asset)
     return { InsertService:LoadLocalAsset(Asset) }
 end)
 
-getgenv()["get_objects"] = getobjects
-getgenv()["GetObjects"] = getobjects
+ENVIRONMENT["get_objects"] = getobjects
+ENVIRONMENT["GetObjects"] = getobjects
 
 -- Returns the script responsible for the currently running function.
-getgenv()["getcallingscript"] = (function() return getgenv(0)["script"] end)
-getgenv()["get_calling_script"] = getcallingscript
-getgenv()["GetCallingScript"] = getcallingscript
+ENVIRONMENT["getcallingscript"] = (function() return getgenv(0)["script"] end)
+ENVIRONMENT["get_calling_script"] = getcallingscript
+ENVIRONMENT["GetCallingScript"] = getcallingscript
 
 -- Generates a new closure using the bytecode of script.
-getgenv()["getscriptclosure"] = (function(script)
+ENVIRONMENT["getscriptclosure"] = (function(script)
 	return function()
 		return getrenv()["table"].clone(getrenv().require(script))
 	end
 end)
 
-getgenv()["get_script_closure"] = getscriptclosure
-getgenv()["GetScriptClosure"] = getscriptclosure
+ENVIRONMENT["get_script_closure"] = getscriptclosure
+ENVIRONMENT["GetScriptClosure"] = getscriptclosure
 
-getgenv()["getscriptfunction"] = getscriptclosure
-getgenv()["get_script_function"] = getscriptclosure
-getgenv()["GetScriptFunction"] = getscriptclosure
+ENVIRONMENT["getscriptfunction"] = getscriptclosure
+ENVIRONMENT["get_script_function"] = getscriptclosure
+ENVIRONMENT["GetScriptFunction"] = getscriptclosure
 
 local function RobloxConsoleHandler(...)
 	warn("Disabled \"rconsole\" library.")
 end
 
-getgenv()["rconsoleclear"] = newcclosure(RobloxConsoleHandler)
-getgenv()["consoleclear"] = rconsoleclear
-getgenv()["console_clear"] = rconsoleclear
-getgenv()["ConsoleClear"] = rconsoleclear
+ENVIRONMENT["rconsoleclear"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["consoleclear"] = rconsoleclear
+ENVIRONMENT["console_clear"] = rconsoleclear
+ENVIRONMENT["ConsoleClear"] = rconsoleclear
 
-getgenv()["rconsolecreate"] = newcclosure(RobloxConsoleHandler)
-getgenv()["consolecreate"] = rconsolecreate
-getgenv()["console_create"] = rconsolecreate
-getgenv()["ConsoleCreate"] = rconsolecreate
+ENVIRONMENT["rconsolecreate"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["consolecreate"] = rconsolecreate
+ENVIRONMENT["console_create"] = rconsolecreate
+ENVIRONMENT["ConsoleCreate"] = rconsolecreate
 
-getgenv()["rconsoledestroy"] = newcclosure(RobloxConsoleHandler)
-getgenv()["consoledestroy"] = rconsoledestroy
-getgenv()["console_destroy"] = rconsoledestroy
-getgenv()["ConsoleDestroy"] = rconsoledestroy
+ENVIRONMENT["rconsoledestroy"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["consoledestroy"] = rconsoledestroy
+ENVIRONMENT["console_destroy"] = rconsoledestroy
+ENVIRONMENT["ConsoleDestroy"] = rconsoledestroy
 
-getgenv()["rconsoleinput"] = newcclosure(RobloxConsoleHandler)
-getgenv()["consoleinput"] = rconsoleinput
-getgenv()["console_input"] = rconsoleinput
-getgenv()["ConsoleInput"] = rconsoleinput
+ENVIRONMENT["rconsoleinput"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["consoleinput"] = rconsoleinput
+ENVIRONMENT["console_input"] = rconsoleinput
+ENVIRONMENT["ConsoleInput"] = rconsoleinput
 
-getgenv()["rconsoleprint"] = newcclosure(RobloxConsoleHandler)
-getgenv()["consoleprint"] = rconsoleprint
-getgenv()["console_print"] = rconsoleprint
-getgenv()["ConsolePrint"] = rconsoleprint
+ENVIRONMENT["rconsoleprint"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["consoleprint"] = rconsoleprint
+ENVIRONMENT["console_print"] = rconsoleprint
+ENVIRONMENT["ConsolePrint"] = rconsoleprint
 
-getgenv()["rconsolesettitle"] = newcclosure(RobloxConsoleHandler)
-getgenv()["rconsolename"] = rconsolesettitle
-getgenv()["consolesettitle"] = rconsolesettitle
-getgenv()["console_set_title"] = rconsolesettitle
-getgenv()["ConsoleSetTitle"] = rconsolesettitle
+ENVIRONMENT["rconsolesettitle"] = newcclosure(RobloxConsoleHandler)
+ENVIRONMENT["rconsolename"] = rconsolesettitle
+ENVIRONMENT["consolesettitle"] = rconsolesettitle
+ENVIRONMENT["console_set_title"] = rconsolesettitle
+ENVIRONMENT["ConsoleSetTitle"] = rconsolesettitle
 
 -- Returns the global environment of the game client. It can be used to access the global functions that LocalScripts and ModuleScripts use.
-getgenv()["getrenv"] = newcclosure(function() return RobloxEnvironment end)
+ENVIRONMENT["getrenv"] = newcclosure(function() return RobloxEnvironment end)
 
 -- Returns whether the game's window is in focus. Must be true for other input functions to work.
-getgenv()["isrbxactive"] = newcclosure(function()
+ENVIRONMENT["isrbxactive"] = newcclosure(function()
     return ClientInfo["IsWindowFocused"]
 end)
 
-getgenv()["is_rbx_active"] = isrbxactive
-getgenv()["IsRbxActive"] = isrbxactive
+ENVIRONMENT["is_rbx_active"] = isrbxactive
+ENVIRONMENT["IsRbxActive"] = isrbxactive
 
-getgenv()["isgameactive"] = isrbxactive
-getgenv()["is_game_active"] = isrbxactive
-getgenv()["IsGameActive"] = isrbxactive
+ENVIRONMENT["isgameactive"] = isrbxactive
+ENVIRONMENT["is_game_active"] = isrbxactive
+ENVIRONMENT["IsGameActive"] = isrbxactive
 
 UserInputService["WindowFocused"]:Connect(function()
     ClientInfo["IsWindowFocused"] = true
@@ -160,76 +162,76 @@ UserInputService["WindowFocusReleased"]:Connect(function()
 end)
 
 -- Dispatches a left mouse button click.
-getgenv()["mouse1click"] = newcclosure(function()
+ENVIRONMENT["mouse1click"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
 end)
 
-getgenv()["Mouse1Click"] = mouse1click
+ENVIRONMENT["Mouse1Click"] = mouse1click
 
 -- Dispatches a left mouse button press.
-getgenv()["mouse1press"] = newcclosure(function()
+ENVIRONMENT["mouse1press"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1)
 end)
 
-getgenv()["Mouse1Press"] = mouse1press
+ENVIRONMENT["Mouse1Press"] = mouse1press
 
 -- Dispatches a left mouse button release.
-getgenv()["mouse1release"] = newcclosure(function()
+ENVIRONMENT["mouse1release"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
 end)
 
-getgenv()["Mouse1Release"] = mouse1release
+ENVIRONMENT["Mouse1Release"] = mouse1release
 
 -- Dispatches a right mouse button click.
-getgenv()["mouse2click"] = newcclosure(function()
+ENVIRONMENT["mouse2click"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 1, true, game, 1)
     VirtualInputManager:SendMouseButtonEvent(0, 0, 1, false, game, 1)
 end)
 
-getgenv()["Mouse2Click"] = mouse2click
+ENVIRONMENT["Mouse2Click"] = mouse2click
 
 -- Dispatches a right mouse button press.
-getgenv()["mouse2press"] = newcclosure(function()
+ENVIRONMENT["mouse2press"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 1, true, game, 1)
 end)
 
-getgenv()["Mouse2Press"] = mouse2press
+ENVIRONMENT["Mouse2Press"] = mouse2press
 
 -- Dispatches a right mouse button release.
-getgenv()["mouse2release"] = newcclosure(function()
+ENVIRONMENT["mouse2release"] = newcclosure(function()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 1, false, game, 1)
 end)
 
-getgenv()["Mouse2Release"] = mouse2release
+ENVIRONMENT["Mouse2Release"] = mouse2release
 
 -- Moves the mouse cursor to the specified absolute position.
-getgenv()["mousemoveabs"] = newcclosure(function(x, y)
+ENVIRONMENT["mousemoveabs"] = newcclosure(function(x, y)
     VirtualInputManager:SendMouseMoveEvent(x, y, game)
 end)
 
-getgenv()["MouseMoveAbs"] = mousemoveabs
+ENVIRONMENT["MouseMoveAbs"] = mousemoveabs
 
 -- Adjusts the mouse cursor by the specified relative amount.
-getgenv()["mousemoverel"] = newcclosure(function(x, y)
+ENVIRONMENT["mousemoverel"] = newcclosure(function(x, y)
     local MouseLocation = UserInputService:GetMouseLocation()
     VirtualInputManager:SendMouseMoveEvent(MouseLocation.X + x, MouseLocation.Y + y, game)
 end)
 
-getgenv()["MouseMoveRel"] = mousemoverel
+ENVIRONMENT["MouseMoveRel"] = mousemoverel
 
 -- Dispatches a mouse scroll by the specified number of pixels.
-getgenv()["mousescroll"] = newcclosure(function(Pixels)
+ENVIRONMENT["mousescroll"] = newcclosure(function(Pixels)
     VirtualInputManager:SendMouseWheelEvent(0, 0, Pixels > 0, game)
 end)
 
-getgenv()["MouseScroll"] = mousescroll
+ENVIRONMENT["MouseScroll"] = mousescroll
 
 --[[
 	Dispatches a click or hover event to the given ClickDetector. When absent, `distance` defaults to zero, and `event` defaults to "MouseClick".
 	Possible input events include 'MouseClick', 'RightMouseClick', 'MouseHoverEnter', and 'MouseHoverLeave'.
 ]]
-getgenv()["fireclickdetector"] = newcclosure(function(Target)
+ENVIRONMENT["fireclickdetector"] = newcclosure(function(Target)
 	assert(typeof(Target) == "Instance", "invalid argument #1 to 'fireclickdetector' (Instance expected, got " .. type(Target) .. ") ", 2)
 	local ClickDetector = Target:FindFirstChild("ClickDetector") or Target
 	local PreviousParent = ClickDetector["Parent"]
@@ -264,11 +266,11 @@ getgenv()["fireclickdetector"] = newcclosure(function(Target)
 	end)
 end)
 
-getgenv()["fire_click_detector"] = fireclickdetector
-getgenv()["FireClickDetector"] = fireclickdetector
+ENVIRONMENT["fire_click_detector"] = fireclickdetector
+ENVIRONMENT["FireClickDetector"] = fireclickdetector
 
 -- Dispatches a ProximityPrompt.
-getgenv()["fireproximityprompt"] = (function(ProximityPrompt, Amount, Skip)
+ENVIRONMENT["fireproximityprompt"] = (function(ProximityPrompt, Amount, Skip)
 	assert(typeof(ProximityPrompt) == "Instance", "invalid argument #1 to 'fireproximityprompt' (Instance expected, got " .. typeof(ProximityPrompt) .. ") ", 2)
 	assert(ProximityPrompt:IsA("ProximityPrompt"), "invalid argument #1 to 'fireproximityprompt' (ProximityPrompt expected, got " .. ProximityPrompt["ClassName"] .. ") ", 2)
 
@@ -297,11 +299,11 @@ getgenv()["fireproximityprompt"] = (function(ProximityPrompt, Amount, Skip)
 	ProximityPrompt["HoldDuration"] = OldHoldDuration
 end)
 
-getgenv()["fire_proximity_prompt"] = fireproximityprompt
-getgenv()["FireProximityPrompt"] = fireproximityprompt
+ENVIRONMENT["fire_proximity_prompt"] = fireproximityprompt
+ENVIRONMENT["FireProximityPrompt"] = fireproximityprompt
 
 -- Creates a list of Connection objects for the functions connected to `signal`.
-getgenv()["getconnections"] = newcclosure(function(Event)
+ENVIRONMENT["getconnections"] = newcclosure(function(Event)
     assert(typeof(Event) == "RBXScriptSignal", "Argument must be a RBXScriptSignal")
 
     local Connections = {}
@@ -327,8 +329,8 @@ getgenv()["getconnections"] = newcclosure(function(Event)
     return Connections
 end)
 
-getgenv()["get_connections"] = getconnections
-getgenv()["GetConnections"] = getconnections
+ENVIRONMENT["get_connections"] = getconnections
+ENVIRONMENT["GetConnections"] = getconnections
 
 local _isscriptable = clonefunction(isscriptable)
 local _setscriptable = clonefunction(setscriptable)
@@ -338,7 +340,7 @@ local ScriptableCache = {}
 	Returns the value of a hidden property of `object`, which cannot be indexed normally.
 	If the property is hidden, the second return value will be `true`. Otherwise, it will be `false`.
 ]]
-getgenv()["gethiddenproperty"] = newcclosure(function(Inst, Idx) 
+ENVIRONMENT["gethiddenproperty"] = newcclosure(function(Inst, Idx) 
 	assert(typeof(Inst) == "Instance", "invalid argument #1 to 'gethiddenproperty' [Instance expected]", 2);
 	local Was = _isscriptable(Inst, Idx);
 	_setscriptable(Inst, Idx, true)
@@ -349,11 +351,11 @@ getgenv()["gethiddenproperty"] = newcclosure(function(Inst, Idx)
 	return Value, not Was
 end)
 
-getgenv()["get_hidden_property"] = gethiddenproperty
-getgenv()["GetHiddenProperty"] = gethiddenproperty
+ENVIRONMENT["get_hidden_property"] = gethiddenproperty
+ENVIRONMENT["GetHiddenProperty"] = gethiddenproperty
 
 -- Sets the value of a hidden property of `object`, which cannot be set normally. Returns whether the property was hidden.
-getgenv()["sethiddenproperty"] = (function(Inst, Idx, Value) 
+ENVIRONMENT["sethiddenproperty"] = (function(Inst, Idx, Value) 
 	assert(typeof(Inst) == "Instance", "invalid argument #1 to 'sethiddenproperty' [Instance expected]", 2);
 	local Was = _isscriptable(Inst, Idx);
 	_setscriptable(Inst, Idx, true)
@@ -365,10 +367,10 @@ getgenv()["sethiddenproperty"] = (function(Inst, Idx, Value)
 	return not Was
 end)
 
-getgenv()["set_hidden_property"] = sethiddenproperty
-getgenv()["SetHiddenProperty"] = sethiddenproperty
+ENVIRONMENT["set_hidden_property"] = sethiddenproperty
+ENVIRONMENT["SetHiddenProperty"] = sethiddenproperty
 
-getgenv()["isscriptable"] = newcclosure(function(Inst: Instance, Property: string)
+ENVIRONMENT["isscriptable"] = newcclosure(function(Inst: Instance, Property: string)
     local InstanceCache = ScriptableCache[Inst]
     if InstanceCache then
         local Value = InstanceCache[Property]
@@ -379,10 +381,10 @@ getgenv()["isscriptable"] = newcclosure(function(Inst: Instance, Property: strin
     return _isscriptable(Inst, Property)
 end)
 
-getgenv()["is_scriptable"] = isscriptable
-getgenv()["IsScriptable"] = isscriptable
+ENVIRONMENT["is_scriptable"] = isscriptable
+ENVIRONMENT["IsScriptable"] = isscriptable
 
-getgenv()["setscriptable"] = newcclosure(function(Inst: Instance, Property: string, Scriptable: boolean)
+ENVIRONMENT["setscriptable"] = newcclosure(function(Inst: Instance, Property: string, Scriptable: boolean)
     local WasScriptable = _isscriptable(Inst, Property)
     if ScriptableCache[Inst] == nil then
         ScriptableCache[Inst] = {}
@@ -391,8 +393,8 @@ getgenv()["setscriptable"] = newcclosure(function(Inst: Instance, Property: stri
     return WasScriptable
 end)
 
-getgenv()["set_scriptable"] = setscriptable
-getgenv()["SetScriptable"] = setscriptable
+ENVIRONMENT["set_scriptable"] = setscriptable
+ENVIRONMENT["SetScriptable"] = setscriptable
 
 local NewIndex; NewIndex = hookmetamethod(game, "__newindex", function(t, k, v)
     if checkcaller() then
@@ -412,12 +414,12 @@ local NewIndex; NewIndex = hookmetamethod(game, "__newindex", function(t, k, v)
     NewIndex(t, k, v)
 end)
 
-getgenv()["setrbxclipboard"] = setclipboard
-getgenv()["set_rbx_clipboard"] = setclipboard
-getgenv()["SetRbxClipboard"] = setclipboard
+ENVIRONMENT["setrbxclipboard"] = setclipboard
+ENVIRONMENT["set_rbx_clipboard"] = setclipboard
+ENVIRONMENT["SetRbxClipboard"] = setclipboard
 
 -- Compresses `data` using LZ4 compression.
-getgenv()["lz4compress"] = newcclosure(function(Data)
+ENVIRONMENT["lz4compress"] = newcclosure(function(Data)
     local Out, i, DataLen = {}, 1, #Data
 
     while i <= DataLen do
@@ -447,11 +449,11 @@ getgenv()["lz4compress"] = newcclosure(function(Data)
     return getrenv()["table"].concat(Out)
 end)
 
-getgenv()["lz4_compress"] = lz4compress
-getgenv()["Lz4Compress"] = lz4compress
+ENVIRONMENT["lz4_compress"] = lz4compress
+ENVIRONMENT["Lz4Compress"] = lz4compress
 
 -- Decompresses `data` using LZ4 compression, with the decompressed size specified by `size`.
-getgenv()["lz4decompress"] = newcclosure(function(Data, Size)
+ENVIRONMENT["lz4decompress"] = newcclosure(function(Data, Size)
     local Out, i, DataLen = {}, 1, #Data
 
     while i <= DataLen and #getrenv()["table"].concat(Out) < Size do
@@ -482,29 +484,29 @@ getgenv()["lz4decompress"] = newcclosure(function(Data, Size)
     return getrenv()["table"].concat(Out):sub(1, Size)
 end)
 
-getgenv()["lz4_decompress"] = lz4decompress
-getgenv()["Lz4Decompress"] = lz4decompress
+ENVIRONMENT["lz4_decompress"] = lz4decompress
+ENVIRONMENT["Lz4Decompress"] = lz4decompress
 
 local function MessageBoxHandler(...)
 	warn("Disabled function \"messagebox\".")
 end
 
-getgenv()["messagebox"] = newcclosure(MessageBoxHandler)
-getgenv()["message_box"] = newcclosure(MessageBoxHandler)
-getgenv()["MessageBox"] = newcclosure(MessageBoxHandler)
+ENVIRONMENT["messagebox"] = newcclosure(MessageBoxHandler)
+ENVIRONMENT["message_box"] = newcclosure(MessageBoxHandler)
+ENVIRONMENT["MessageBox"] = newcclosure(MessageBoxHandler)
 
 local function QueueOnTeleportHandler(...)
 	warn("Disabled function \"queue_on_teleport\".")
 end
 
-getgenv()["queueonteleport"] = newcclosure(QueueOnTeleportHandler)
-getgenv()["queue_on_teleport"] = newcclosure(QueueOnTeleportHandler)
-getgenv()["QueueOnTeleport"] = newcclosure(QueueOnTeleportHandler)
+ENVIRONMENT["queueonteleport"] = newcclosure(QueueOnTeleportHandler)
+ENVIRONMENT["queue_on_teleport"] = newcclosure(QueueOnTeleportHandler)
+ENVIRONMENT["QueueOnTeleport"] = newcclosure(QueueOnTeleportHandler)
 
 local CurrentFps, _Task = nil, nil
 
 -- Sets the in-game FPS cap to `fps`. If `fps` is 0, the FPS cap is disabled.
-getgenv()["setfpscap"] = newcclosure(function(NewCap)
+ENVIRONMENT["setfpscap"] = newcclosure(function(NewCap)
     if _Task then
         getrenv()["task"].cancel(_Task)
         _Task = nil
@@ -526,19 +528,19 @@ getgenv()["setfpscap"] = newcclosure(function(NewCap)
     end
 end)
 
-getgenv()["set_fps_cap"] = setfpscap
-getgenv()["SetFpsCap"] = setfpscap
+ENVIRONMENT["set_fps_cap"] = setfpscap
+ENVIRONMENT["SetFpsCap"] = setfpscap
 
 -- Returns the in-game FPS cap.
-getgenv()["getfpscap"] = newcclosure(function()
+ENVIRONMENT["getfpscap"] = newcclosure(function()
 	return getrenv()["workspace"]:GetRealPhysicsFPS()
 end)
 
-getgenv()["get_fps_cap"] = getfpscap
-getgenv()["GetFpsCap"] = getfpscap
+ENVIRONMENT["get_fps_cap"] = getfpscap
+ENVIRONMENT["GetFpsCap"] = getfpscap
 
 -- Returns a list of ModuleScripts that have been loaded. If `excludeCore` is true, CoreScript-related modules will not be included in the list.
-getgenv()["getloadedmodules"] = newcclosure(function()
+ENVIRONMENT["getloadedmodules"] = newcclosure(function()
     local LoadedModules = {}
     for _, v in pairs(getrenv()["game"]:GetDescendants()) do
         if typeof(v) == "Instance" and v:IsA("ModuleScript") then getrenv()["table"].insert(LoadedModules, v) end
@@ -546,11 +548,11 @@ getgenv()["getloadedmodules"] = newcclosure(function()
     return LoadedModules
 end)
 
-getgenv()["get_loaded_modules"] = getloadedmodules
-getgenv()["GetLoadedModules"] = getloadedmodules
+ENVIRONMENT["get_loaded_modules"] = getloadedmodules
+ENVIRONMENT["GetLoadedModules"] = getloadedmodules
 
 -- Returns a list of scripts that are currently running.
-getgenv()["getrunningscripts"] = newcclosure(function()
+ENVIRONMENT["getrunningscripts"] = newcclosure(function()
     local RunningScripts = {}
     for _, v in ipairs(Players["LocalPlayer"]:GetDescendants()) do
         if v:IsA("LocalScript") or v:IsA("ModuleScript") then
@@ -560,22 +562,22 @@ getgenv()["getrunningscripts"] = newcclosure(function()
     return RunningScripts
 end)
 
-getgenv()["get_running_scripts"] = getrunningscripts
-getgenv()["GetRunningScripts"] = getrunningscripts
+ENVIRONMENT["get_running_scripts"] = getrunningscripts
+ENVIRONMENT["GetRunningScripts"] = getrunningscripts
 
-getgenv()["getscripts"] = getrunningscripts
-getgenv()["get_scripts"] = getrunningscripts
-getgenv()["GetScripts"] = getrunningscripts
+ENVIRONMENT["getscripts"] = getrunningscripts
+ENVIRONMENT["get_scripts"] = getrunningscripts
+ENVIRONMENT["GetScripts"] = getrunningscripts
 
 -- Returns a SHA384 hash of the script's bytecode. This is useful for detecting changes to a script's source code.
-getgenv()["getscripthash"] = newcclosure(function(Inst)
+ENVIRONMENT["getscripthash"] = newcclosure(function(Inst)
     assert(typeof(Inst) == "Instance", "invalid argument #1 to 'getscripthash' (Instance expected, got " .. typeof(Inst) .. ") ", 2)
 	assert(Inst:IsA("LuaSourceContainer"), "invalid argument #1 to 'getscripthash' (LuaSourceContainer expected, got " .. Inst["ClassName"] .. ") ", 2)
 	return Inst:GetHash()
 end)
 
 -- Returns the global environment of the given script. It can be used to access variables and functions that are not defined as local.
-getgenv()["getsenv"] = newcclosure(function(script)
+ENVIRONMENT["getsenv"] = newcclosure(function(script)
     assert(typeof(script) == "Instance", "invalid argument #1 to 'getsenv' [ModuleScript or LocalScript expected]", 2);
 	assert((script:IsA("LocalScript") or script:IsA("ModuleScript")), "invalid argument #1 to 'getsenv' [ModuleScript or LocalScript expected]", 2)
 	if (script:IsA("LocalScript") == true) then 
@@ -1186,25 +1188,25 @@ elseif drawingType == "Triangle" then
 end
 end
 
-getgenv()["Drawing"] = DrawingLib
-getgenv()["Drawing"]["Fonts"] = {
+ENVIRONMENT["Drawing"] = DrawingLib
+ENVIRONMENT["Drawing"]["Fonts"] = {
     ['UI'] = 0,
     ['System'] = 1,
     ['Plex'] = 2,
     ['Monospace'] = 3
 }
 
-getgenv()["cleardrawcache"] = newcclosure(function()
+ENVIRONMENT["cleardrawcache"] = newcclosure(function()
     for _, v in pairs(Drawings) do
         v:Remove()
     end
     table.clear(drawings)
 end)
 
-getgenv()["clear_draw_cache"] = cleardrawcache
-getgenv()["ClearDrawCache"] = cleardrawcache
+ENVIRONMENT["clear_draw_cache"] = cleardrawcache
+ENVIRONMENT["ClearDrawCache"] = cleardrawcache
 
-getgenv()["isrenderobj"] = newcclosure(function(Inst)
+ENVIRONMENT["isrenderobj"] = newcclosure(function(Inst)
     for _, v in pairs(drawings) do
         if v == Inst and type(v) == "table" then
             return true
@@ -1213,23 +1215,25 @@ getgenv()["isrenderobj"] = newcclosure(function(Inst)
     return false
 end)
 
-getgenv()["is_render_obj"] = isrenderobj
-getgenv()["IsRenderObj"] = isrenderobj
+ENVIRONMENT["is_render_obj"] = isrenderobj
+ENVIRONMENT["IsRenderObj"] = isrenderobj
 
-getgenv()["getrenderproperty"] = newcclosure(function(a, b)
+ENVIRONMENT["getrenderproperty"] = newcclosure(function(a, b)
     return a[b]
 end)
 
-getgenv()["get_render_property"] = getrenderproperty
-getgenv()["GetRenderProperty"] = getrenderproperty
+ENVIRONMENT["get_render_property"] = getrenderproperty
+ENVIRONMENT["GetRenderProperty"] = getrenderproperty
 
-getgenv()["setrenderproperty"] = newcclosure(function(a, b, c)
+ENVIRONMENT["setrenderproperty"] = newcclosure(function(a, b, c)
     local success, err = pcall(function()
         a[b] = c
     end)
     if not success and err then warn(err) end
 end)
 
-getgenv()["set_render_property"] = getrenderproperty
-getgenv()["SetRenderProperty"] = setrenderproperty
+ENVIRONMENT["set_render_property"] = getrenderproperty
+ENVIRONMENT["SetRenderProperty"] = setrenderproperty
 print("[ENVIRONMENT] LOADED ENVIRONMENT")
+
+return ENVIRONMENT
