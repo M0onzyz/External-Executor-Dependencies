@@ -90,5 +90,4 @@ ENVIRONMENT["getscriptclosure"] = (function(script)
 	end
 end)
 
-return 
-local ENVIRONMENT
+return ENVIRONMENT
