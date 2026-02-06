@@ -7,7 +7,6 @@ drawingUI.IgnoreGuiInset = true
 drawingUI.DisplayOrder = 0x7fffffff
 drawingUI.Parent = playergui
 drawingUI.Parent = coreGui
-player:WaitForChild("PlayerGui")
 
 local drawingIndex = 0
 --[[
