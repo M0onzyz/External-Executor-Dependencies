@@ -8,13 +8,20 @@ drawingUI.DisplayOrder = 0x7fffffff
 drawingUI.Parent = coreGui
 
 local drawingIndex = 0
+--[[
 local drawingFontsEnum = {
 	[0] = Font.fromEnum(Enum.Font.Roboto),
 	[1] = Font.fromEnum(Enum.Font.Legacy),
 	[2] = Font.fromEnum(Enum.Font.SourceSans),
 	[3] = Font.fromEnum(Enum.Font.RobotoMono)
 }
-
+--]]
+local drawingFontsEnum = {
+    [0] = Enum.Font.Roboto,
+    [1] = Enum.Font.Legacy,
+    [2] = Enum.Font.SourceSans,
+    [3] = Enum.Font.RobotoMono
+}
 local function getFontFromIndex(fontIndex)
 	return drawingFontsEnum[fontIndex]
 end
