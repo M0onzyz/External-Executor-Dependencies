@@ -1,12 +1,5 @@
 -- Skidding Ballistic In 2026 lol
 
---!native
---!optimize 2
-
--- Alright guys considering you enjoy pretending like you did something by spreading our init script around, just know that we don't obfuscate it because we don't give a flying fuck.
-
-if not game:IsLoaded() then game["Loaded"]:Wait() end
-
 local ENVIRONMENT = {} -- will be returned later to merge with already existing env
 
 local VirtualInputManager = game:GetService("VirtualInputManager")
