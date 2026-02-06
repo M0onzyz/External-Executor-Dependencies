@@ -75,13 +75,13 @@ ENVIRONMENT["getobjects"] = newcclosure(function(Asset)
     return { InsertService:LoadLocalAsset(Asset) }
 end)
 
-ENVIRONMENT["get_objects"] = getobjects
-ENVIRONMENT["GetObjects"] = getobjects
+ENVIRONMENT["get_objects"] = ENVIRONMENT["getobjects"]
+ENVIRONMENT["GetObjects"] = ENVIRONMENT["getobjects"]
 
 -- Returns the script responsible for the currently running function.
 ENVIRONMENT["getcallingscript"] = (function() return getgenv(0)["script"] end)
-ENVIRONMENT["get_calling_script"] = getcallingscript
-ENVIRONMENT["GetCallingScript"] = getcallingscript
+ENVIRONMENT["get_calling_script"] = ENVIRONMENT["getcallingscript"]
+ENVIRONMENT["GetCallingScript"] = ENVIRONMENT["getcallingscript"]
 
 -- Generates a new closure using the bytecode of script.
 ENVIRONMENT["getscriptclosure"] = (function(script)
