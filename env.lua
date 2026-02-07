@@ -422,19 +422,11 @@ ENVIRONMENT["GetScripts"] = ENVIRONMENT["getrunningscripts"]
 ENVIRONMENT["getscripthash"] = newcclosure(function(Inst)
     assert(typeof(Inst) == "Instance", "invalid argument #1 to 'getscripthash' (Instance expected, got " .. typeof(Inst) .. ") ", 2)
 	assert(Inst:IsA("LuaSourceContainer"), "invalid argument #1 to 'getscripthash' (LuaSourceContainer expected, got " .. Inst["ClassName"] .. ") ", 2)
-	return Inst:GetHash()
-end)
-ENVIRONMENT["getscripthash"] = newcclosure(function(Inst)
-    assert(typeof(Inst) == "Instance", "invalid argument #1 to 'getscripthash' (Instance expected, got " .. typeof(Inst) .. ") ", 2)
-	assert(Inst:IsA("LuaSourceContainer"), "invalid argument #1 to 'getscripthash' (LuaSourceContainer expected, got " .. Inst["ClassName"] .. ") ", 2)
-
     local src = inst.Source
-
-    -- compile to bytecode first (optional but better)
+    -- compile to bytecode first (optional but better according to ChatGPT)
     local bc = env.compile(src, true)
-
     -- hash bytecode
-    return env.sha384(bc)
+    return sha.sha384(bc)
 end)
 
 
