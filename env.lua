@@ -71,6 +71,9 @@ ENVIRONMENT["consolesettitle"] = ENVIRONMENT["rconsolesettitle"]
 ENVIRONMENT["console_set_title"] = ENVIRONMENT["rconsolesettitle"]
 ENVIRONMENT["ConsoleSetTitle"] = ENVIRONMENT["rconsolesettitle"]
 
+
+local ClientInfo = { IsWindowFocused = true }
+
 -- Returns whether the game's window is in focus. Must be true for other input functions to work.
 ENVIRONMENT["isrbxactive"] = newcclosure(function()
     return ClientInfo["IsWindowFocused"]
