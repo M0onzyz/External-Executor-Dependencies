@@ -326,10 +326,6 @@ end)
 ENVIRONMENT["get_connections"] = ENVIRONMENT["getconnections"]
 ENVIRONMENT["GetConnections"] = ENVIRONMENT["getconnections"]
 
-local _isscriptable = clonefunction(isscriptable)
-local _setscriptable = clonefunction(setscriptable)
-local ScriptableCache = {}
-
 --[[
 	Returns the value of a hidden property of `object`, which cannot be indexed normally.
 	If the property is hidden, the second return value will be `true`. Otherwise, it will be `false`.
@@ -364,6 +360,9 @@ end)
 ENVIRONMENT["set_hidden_property"] = ENVIRONMENT["sethiddenproperty"]
 ENVIRONMENT["SetHiddenProperty"] = ENVIRONMENT["sethiddenproperty"]
 
+
+
+local ScriptableCache = {}
 ENVIRONMENT["isscriptable"] = newcclosure(function(Inst: Instance, Property: string)
     local InstanceCache = ScriptableCache[Inst]
     if InstanceCache then
@@ -374,7 +373,7 @@ ENVIRONMENT["isscriptable"] = newcclosure(function(Inst: Instance, Property: str
     end
     return _isscriptable(Inst, Property)
 end)
-
+local _isscriptable = clonefunction(ENVIRONMENT["isscriptable"])
 ENVIRONMENT["is_scriptable"] = ENVIRONMENT["isscriptable"]
 ENVIRONMENT["IsScriptable"] = ENVIRONMENT["isscriptable"]
 
@@ -387,8 +386,10 @@ ENVIRONMENT["setscriptable"] = newcclosure(function(Inst: Instance, Property: st
     return WasScriptable
 end)
 
+local _setscriptable = clonefunction(ENVIRONMENT["setscriptable"])
 ENVIRONMENT["set_scriptable"] = ENVIRONMENT["setscriptable"]
 ENVIRONMENT["SetScriptable"] = ENVIRONMENT["setscriptable"]
+
 
 local NewIndex; NewIndex = hookmetamethod(game, "__newindex", function(t, k, v)
     if checkcaller() then
