@@ -425,45 +425,6 @@ ENVIRONMENT["getscripthash"] = newcclosure(function(Inst)
 	return Inst:GetHash()
 end)
 
--- Returns the global environment of the given script. It can be used to access variables and functions that are not defined as local.
-ENVIRONMENT["getsenv"] = newcclosure(function(script)
-    assert(typeof(script) == "Instance", "invalid argument #1 to 'getsenv' [ModuleScript or LocalScript expected]", 2);
-	assert((script:IsA("LocalScript") or script:IsA("ModuleScript")), "invalid argument #1 to 'getsenv' [ModuleScript or LocalScript expected]", 2)
-	if (script:IsA("LocalScript") == true) then 
-		for _, v in getreg() do
-			if (type(v) == "function") then
-				if getfenv(v)["script"] then
-					if getfenv(v)["script"] == script then
-						return getfenv(v)
-					end
-				end
-			end
-		end
-	else
-		local Reg = getreg()
-		local Senv = {}
-
-		if #Reg == 0 then
-			return require(script)
-		end
-
-		for _, v in next, Reg do
-			if type(v) == "function" and islclosure(v) then
-				local Fenv = getfenv(v)
-				local Raw = rawget(Fenv, "script")
-				if Raw and Raw == script then
-					for i, k in next, Fenv do
-						if i ~= "script" then
-							rawset(Senv, i, k)
-						end
-					end
-				end
-			end
-		end
-		return Senv
-	end
-end)
-
 
 
 return ENVIRONMENT
