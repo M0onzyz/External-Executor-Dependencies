@@ -418,16 +418,6 @@ ENVIRONMENT["getscripts"] = ENVIRONMENT["getrunningscripts"]
 ENVIRONMENT["get_scripts"] = ENVIRONMENT["getrunningscripts"]
 ENVIRONMENT["GetScripts"] = ENVIRONMENT["getrunningscripts"]
 
--- Returns a SHA384 hash of the script's bytecode. This is useful for detecting changes to a script's source code.
-ENVIRONMENT["getscripthash"] = newcclosure(function(Inst)
-    assert(typeof(Inst) == "Instance", "invalid argument #1 to 'getscripthash' (Instance expected, got " .. typeof(Inst) .. ") ", 2)
-	assert(Inst:IsA("LuaSourceContainer"), "invalid argument #1 to 'getscripthash' (LuaSourceContainer expected, got " .. Inst["ClassName"] .. ") ", 2)
-    local src = inst.Source
-    -- compile to bytecode first (optional but better according to ChatGPT)
-    local bc = env.compile(src, true)
-    -- hash bytecode
-    return sha.sha384(bc)
-end)
 
 
 return ENVIRONMENT
