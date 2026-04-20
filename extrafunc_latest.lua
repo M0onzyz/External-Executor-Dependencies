@@ -1783,7 +1783,7 @@ getgenv().is_executor_closure = isexecclosure
 
 
  -- fake function outta here
- 
+ --[[
 getgenv().debug.getproto = function(func, index, active)
     local protoFunctions = {
         [1] = function() return true end
@@ -1865,7 +1865,7 @@ end
 getgenv().debug.setupvalue = function(func)
     return nil, "Not implemented"
 end
-
+--]]
 -- some funcs from moreunc ( https://scriptblox.com/script/Universal-Script-MoreUNC-13110 )
 getgenv().clonefunc = clonefunction
 getgenv().getscripts = getrunningscripts
@@ -2131,7 +2131,7 @@ if not shared.vulnsm then
     end
 	end
 
-    Xeno.WebSocket = {
+    getgenv().WebSocket_ = {
   connect = function(url)
     local ws = { 
         Send = function(self, data)  end, 
@@ -2213,7 +2213,7 @@ getgenv().loadfileasync = loadfile
 getgenv().clearconsole = rconsoleclear 
 getgenv().printconsole = rconsoleprint 
 getgenv().getsynasset = getcustomasset 
-getgenv().debug.getregistry = getreg 
+-- getgenv().debug.getregistry = getreg 
 getgenv().readfileasync = readfile 
 getgenv().writefileasync = writefile
 getgenv().appendfileasync = appendfile 
