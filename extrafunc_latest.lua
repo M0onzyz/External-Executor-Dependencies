@@ -1960,9 +1960,9 @@ end
 getgenv().syn.crypt = getgenv().crypt
 getgenv().syn.crypto = getgenv().crypt
 getgenv().syn_backup = getgenv().syn
-getgenv().syn.cache_replace = cache.replace 
-getgenv().syn.cache_invalidate = cache.invalidate 
-getgenv().syn.is_cached = cache.iscached 
+-- getgenv().syn.cache_replace = cache.replace  No Cache Lib RN
+-- getgenv().syn.cache_invalidate = cache.invalidate 
+-- getgenv().syn.is_cached = cache.iscached 
 getgenv().syn.set_thread_identity = setthreadidentity 
 getgenv().syn.get_thread_identity = getthreadidentity 
 getgenv().syn.queue_on_teleport = queueonteleport 
