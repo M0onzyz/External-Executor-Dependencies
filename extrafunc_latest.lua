@@ -2270,6 +2270,7 @@ if not shared.notified and shared.notificationlibinject == false then
 	})
     shared.notified = true 
 else
+												--[[
     --local notificationlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/moonzybinninwl/apiShit/main/notificationlib.lua", true))()
     --notificationlib.new("info", "Sync", "Sync has injected.")
     --local notificationlib_v2 = loadstring(game:HttpGet("https://raw.githubusercontent.com/zwar808/BetterUNC/refs/heads/main/library.lua"))().Notify
@@ -2279,6 +2280,8 @@ else
         Description="Sync has injected! You can join the discord from discord.gg/XCpMgyA4R3",
         RBGShift=true,
     })
+												--]]
+	print("SUCCESS")
 end 
 getgenv().IS_Sync_LOADED = true
 print("Full Loaded")
